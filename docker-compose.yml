@@ -1,0 +1,26 @@
+version: '3.0'
+services:
+
+  nfs-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: andremenezesme/nfs-server:alpine
+    container_name: nfs-server
+    privileged: true
+    ports:
+      - 2049:2049
+    networks:
+      nfs:
+        ipv4_address: 10.5.0.5
+    volumes:
+      - nfsdata:/nfs.1
+    environment:
+      SHARED_DIRECTORY: '/nfs.1'
+
+volumes:
+  nfs:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/24
